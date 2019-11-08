@@ -1,0 +1,12 @@
+<div class="container-fluid">
+        <div class="row">
+          <div class="card col-sm-3" *ngFor="let item of products" style="width: 18rem;">
+            <div class="card-body" *ngIf="item.isAvailable">
+              <img src="{{item.image}}" class="card-img-top img" alt="item.imageAlt">
+              <h5 class="card-title">{{item.name| uppercase}}</h5>
+              <p class="card-text">{{item.description}}</p>
+              <p class="card-text">${{item.price}}/-</p>
+              <button href="#" class="btn btn-primary" [disabled]="!item.isAvailable">Add to cart</button>
+            </div>
+          </div>
+        </div>
