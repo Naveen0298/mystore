@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Products } from '../model/product';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { CoreEnvironment } from '@angular/compiler/src/compiler_facade_interface';
 @Injectable({
   providedIn: 'root'
 })
 
 export class ProductsService {
+  actionUrl = environment.baseUrl;
   constructor(private http: HttpClient) { }
   // tslint:disable-next-line: no-unused-expression
   /* private products: Array<Products> = [
@@ -65,18 +68,18 @@ export class ProductsService {
  constructor(private http: HttpClient) { }
  */
   pushProducts(product: Products) {
-    return this.http.post('http://localhost:3000/product', product);
+    return this.http.post(this.actionUrl + '/product', product);
   }
   getproducts() {
-    return this.http.get('http://localhost:3000/product');
+    return this.http.get(this.actionUrl + '/product');
   }
   filterProducts(id) {
-    return this.http.get('http://localhost:3000/product/' + id);
+    return this.http.get(this.actionUrl + '/product/' + id);
   }
   updateProducts(form, id) {
-    return this.http.put('http://localhost:3000/product/' + id, form);
+    return this.http.put(this.actionUrl + '/product/' + id, form);
   }
   deleteProducts(id) {
-    return this.http.delete('http://localhost:3000/product/' + id);
+    return this.http.delete(this.actionUrl + '/product/' + id);
   }
 }

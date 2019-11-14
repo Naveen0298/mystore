@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProductsService } from '../services/products.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
 // tslint:disable-next-line: no-conflicting-lifecycle
 @Component({
   selector: 'app-addproduct',
@@ -11,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AddproductComponent implements OnInit {
   myForm: FormGroup;
   data;
-  constructor(private product: ProductsService, private route: ActivatedRoute) {
+  constructor(private product: ProductsService, private route: ActivatedRoute, private router: Router) {
   }
   productId: any;
 
@@ -27,17 +28,18 @@ export class AddproductComponent implements OnInit {
       isAvailable: new FormControl('', Validators.required),
       price: new FormControl('', Validators.pattern('^[0-9]+.[0-9]'))
     });
-    this.product.filterProducts(this.productId).subscribe(response => {
-      this.data = response;
-      this.myForm.patchValue({
-        id: this.data.id,
-        title: this.data.title,
-        description: this.data.description,
-        imageUrl: this.data.imageUrl,
-        isAvailable: this.data.isAvailable,
-        price: this.data.price
+    if (this.productId) {
+      this.product.filterProducts(this.productId).subscribe(response => {
+        this.data = response;
+        this.myForm.patchValue({
+          title: this.data.title,
+          description: this.data.description,
+          imageUrl: this.data.imageUrl,
+          isAvailable: this.data.isAvailable,
+          price: this.data.price
+        });
       });
-    });
+    }
   }
 
   onSubmit(form: FormGroup) {
@@ -45,18 +47,17 @@ export class AddproductComponent implements OnInit {
     // console.log(this.myForm.value);
     if (this.productId) {
       this.product.updateProducts(form.value, this.productId).subscribe(data => {
-        console.log((data)); }
-        );
+        alert('Products updated successfully');
+        this.router.navigate(['']);
+      }
+      );
     } else {
       this.product.pushProducts(this.myForm.value).subscribe(data => {
-        console.log((data));
+        alert('Products added successfully');
+        this.router.navigate(['']);
       });
     }
 
   }
-  delete(){
-    this.product.deleteProducts(this.productId).subscribe(data => {
-      console.log((data)); }
-      );
-  }
+
 }
