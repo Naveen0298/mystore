@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProductsService } from '../services/products.service';
-
+import { ActivatedRoute } from '@angular/router';
 // tslint:disable-next-line: no-conflicting-lifecycle
 @Component({
   selector: 'app-addproduct',
@@ -10,37 +10,53 @@ import { ProductsService } from '../services/products.service';
 })
 export class AddproductComponent implements OnInit {
   myForm: FormGroup;
-  constructor(private product: ProductsService) {
-
+  data;
+  constructor(private product: ProductsService, private route: ActivatedRoute) {
   }
+  productId: any;
 
   ngOnInit() {
+    this.productId = this.route.snapshot.params.id;
+
     this.myForm = new FormGroup({
 
-      image: new FormControl('', Validators.required),
-      name: new FormControl('', Validators.required),
+      imageUrl: new FormControl('', Validators.required),
+      title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.maxLength(10)),
       imageAlt: new FormControl('', Validators.required),
       isAvailable: new FormControl('', Validators.required),
-      price: new FormControl('', Validators.required)
+      price: new FormControl('', Validators.pattern('^[0-9]+.[0-9]'))
+    });
+    this.product.filterProducts(this.productId).subscribe(response => {
+      this.data = response;
+      this.myForm.patchValue({
+        id: this.data.id,
+        title: this.data.title,
+        description: this.data.description,
+        imageUrl: this.data.imageUrl,
+        isAvailable: this.data.isAvailable,
+        price: this.data.price
+      });
     });
   }
 
   onSubmit(form: FormGroup) {
-    console.log('Valid?', form.valid); // true or false
 
-    console.log('image', form.value.image);
-    console.log('Name', form.value.name);
-    console.log('Description', form.value.description);
-    console.log('imageAlt', form.value.imageAlt);
-    console.log('isAvailable', form.value.isAvailable);
-
-    console.log('Price', form.value.price);
-    console.log(this.myForm.value);
-    if(this.myForm.valid){
-    this.product.pushProducts(this.myForm.value);}
-    else{
-     alert('form error');
+    // console.log(this.myForm.value);
+    if (this.productId) {
+      this.product.updateProducts(form.value, this.productId).subscribe(data => {
+        console.log((data)); }
+        );
+    } else {
+      this.product.pushProducts(this.myForm.value).subscribe(data => {
+        console.log((data));
+      });
     }
+
+  }
+  delete(){
+    this.product.deleteProducts(this.productId).subscribe(data => {
+      console.log((data)); }
+      );
   }
 }

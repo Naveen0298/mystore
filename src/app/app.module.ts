@@ -8,11 +8,13 @@ import { FooterComponent } from './footer/footer.component';
 import { AddproductComponent } from './addproduct/addproduct.component';
 import { ProductdetailsComponent } from './productdetails/productdetails.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'
 const appRoutes: Routes = [
   { path: '', component: CardComponent },
   { path: 'addproduct', component: AddproductComponent },
-  { path: 'productdetails/:id', component: ProductdetailsComponent  }
- ];
+  { path: 'addproduct/:id', component: AddproductComponent },
+  { path: 'productdetails/:id', component: ProductdetailsComponent }
+];
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,10 +23,11 @@ const appRoutes: Routes = [
     FooterComponent,
     AddproductComponent,
     ProductdetailsComponent
-    
+
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forRoot(
       appRoutes

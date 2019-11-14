@@ -1,10 +1,12 @@
-<form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
-  <input class="form-control" formControlName="name" placeholder="Your product's name">
-  <input class="form-control" formControlName="image" placeholder="Your image's url">
+<form [formGroup]="myForm" >
+  <input class="form-control" formControlName="title" placeholder="Your product's name">
+  <input class="form-control" formControlName="imageUrl" placeholder="Your image's url">
   <input class="form-control" formControlName="description" placeholder="Your description">
   <input class="form-control" formControlName="isAvailable" placeholder="isAvailable(true/false)">
   <input class="form-control" formControlName="imageAlt" placeholder="Your imageAlt">
   <input class="form-control" formControlName="price" placeholder="Your price">
 
-  <button type="submit" class="btn btn-primary">Send</button>
+  <button type="submit" (click)="onSubmit(myForm)" class="btn btn-primary" >Send</button>
+  <button type="submit" (click)="delete()" class="btn btn-primary" routerLink="" routerLinkActive="active">Delete</button>
+  
 </form>

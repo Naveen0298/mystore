@@ -1,10 +1,10 @@
 <div class="container-fluid">
         <div class="row">
           <div class="card col-sm-3" *ngFor="let item of products" style="width: 18rem;">
-            <div class="card-body" *ngIf="item.isAvailable">
+            <div class="card-body">
            
               <app-productdetails [item]='item'></app-productdetails>
-              <button type="button" class="btn btn-secondary" routerLink="/productdetails" routerLinkActive="active" >Details</button>
+             
               
             </div>
           </div>

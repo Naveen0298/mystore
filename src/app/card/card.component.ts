@@ -6,12 +6,12 @@ import { ProductsService } from '../services/products.service';
   styleUrls: ['./card.component.css']
 })
 export class CardComponent implements OnInit {
-products;
-  constructor(private productService: ProductsService) { 
-    this.products = this.productService.getproducts();
+  products;
+  constructor(private productService: ProductsService) {
+    this.productService.getproducts().subscribe(data => {
+      this.products = data;
+    });
   }
-    
-  
   ngOnInit() {
   }
 
